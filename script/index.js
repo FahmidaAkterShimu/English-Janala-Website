@@ -21,6 +21,65 @@ const loadLevelWord = (id) => {
         });
 };
 
+
+
+// {
+// "word": "Eager",
+// "meaning": "আগ্রহী",
+// "pronunciation": "ইগার",
+// "level": 1,
+// "sentence": "The kids were eager to open their gifts.",
+// "points": 1,
+// "partsOfSpeech": "adjective",
+// "synonyms": [
+// "enthusiastic",
+// "excited",
+// "keen"
+// ],
+// "id": 5
+// }
+
+
+
+const loadWordDetail = async (id) => {
+    const url = `https://openapi.programming-hero.com/api/word/${id}`;
+    const res = await fetch(url);
+    const details = await res.json();
+    displayWordDetails(details.data);
+}
+
+const displayWordDetails = (word) => {
+    const detailsBox = document.getElementById("details-container");
+    detailsBox.innerHTML = `
+                    <div class="space-y-2">
+                    <h2 class="text-4xl font-semibold">
+                        ${word.word} (<i class="fa-solid fa-microphone-lines"></i> :${word.pronunciation})
+                    </h2>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-semibold">
+                        Meaning
+                    </h2>
+                    <p class="text-2xl font-medium font-bangla">${word.meaning}</p>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-semibold">
+                        Example
+                    </h2>
+                    <p class="text-2xl font-medium">${word.sentence}</p>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-semibold font-bangla">
+                        সমার্থক শব্দ গুলো
+                    </h2>
+                    <span class="btn">${word.synonyms[0]}</span>
+                    <span class="btn">${word.synonyms[1]}</span>
+                    <span class="btn">${word.synonyms[2]}</span>
+                </div>
+    `;
+    document.getElementById("word_modal").showModal();
+}
+
 const displayLevelWord = (words) => {
     const wordContainer = document.getElementById("word-container");
     wordContainer.innerHTML = "";
@@ -53,7 +112,7 @@ const displayLevelWord = (words) => {
             <p class="text-xl font-medium">Meaning / Pronunciation</p>
             <div class="font-bangla text-[32px] font-semibold">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation ? word.pronunciation : "Pronunciation পাওয়া যায়নি"}"</div>
             <div class="flex justify-between items-center">
-                <button onclick="my_modal_5.showModal()" class="btn btn-soft rounded-md bg-[#1A91FF1A] hover:bg-[#1A91FF80] border-none h-14 w-14"><i
+                <button onclick="loadWordDetail(${word.id})" class="btn btn-soft rounded-md bg-[#1A91FF1A] hover:bg-[#1A91FF80] border-none h-14 w-14"><i
                         class="fa-solid fa-circle-info"></i></button>
                 <button class="btn btn-soft rounded-md bg-[#1A91FF1A] hover:bg-[#1A91FF80] border-none h-14 w-14"><i
                         class="fa-solid fa-volume-high"></i></button>
